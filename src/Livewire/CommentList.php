@@ -32,18 +32,18 @@ class CommentList extends Component
     #[Locked]
     public Model $model;
 
-    public int $total;
+    public int $total = 0;
 
     public ?int $limit = 15;
 
     public ?int $perPage;
 
     #[Locked]
-    public bool $guestMode;
+    public bool $guestMode = false;
 
     public bool $paginationRequired;
 
-    public Sort $sortBy;
+    public Sort $sortBy = Sort::TOP;
 
     public string $filter = '';
 
