@@ -101,6 +101,10 @@ class ReactionsManager extends Component
             return;
         }
 
+        if (!$this->relatedModel->canCreateComment()) {
+            abort(403, 'You are not allowed to react to this comment.');
+        }
+
         if (!$reactionManager->handle(
             $type,
             $this->comment,

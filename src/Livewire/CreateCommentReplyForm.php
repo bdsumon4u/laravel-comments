@@ -7,6 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use LakM\Comments\Abstracts\AbstractQueries;
@@ -129,6 +130,10 @@ class CreateCommentReplyForm extends Component
         $this->protectAgainstSpam();
 
         $this->validate();
+
+        if (!$this->relatedModel->canCreateComment(Auth::guard($this->relatedModel->getAuthGuard())->user())) {
+            abort(403, 'You are not allowed to create a reply.');
+        }
 
         if (!$this->guestMode) {
             Gate::authorize('create-reply');

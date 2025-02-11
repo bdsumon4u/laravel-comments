@@ -131,6 +131,8 @@ class CreateCommentForm extends Component
             $this->dispatch('reset-editor-' . $this->editorId, value: $this->text);
 
             $this->setLimitExceededStatus();
+        } else {
+            abort(403, 'You are not allowed to create a comment.');
         }
     }
 
