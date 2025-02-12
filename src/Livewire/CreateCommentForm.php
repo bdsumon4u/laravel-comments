@@ -2,6 +2,7 @@
 
 namespace LakM\Comments\Livewire;
 
+use App\Jobs\CommentSentiment;
 use GrahamCampbell\Security\Facades\Security;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -118,11 +119,13 @@ class CreateCommentForm extends Component
         $this->validate();
 
         if ($this->model->canCreateComment(Auth::guard($this->model->getAuthGuard())->user())) {
-            CreateCommentAction::execute(
+            $comment =CreateCommentAction::execute(
                 $this->model,
                 MessageData::fromArray($this->getFormData()),
                 $this->getGuestData()
             );
+
+            CommentSentiment::dispatch($comment, $this->model);
 
             $this->clear();
 
